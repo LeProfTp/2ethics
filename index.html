@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Wirtschafts- und digitale Ethik · Moral &amp; Digitale Allmenden</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#faf7f2;--bg2:#f3ede3;--bg3:#ede5d8;
+  --ink:#18120a;--muted:#8a7060;--light:#c4b89e;
+  --brd:#ddd5c8;--brd2:#c8bfb0;
+  --burg:#7c2d3e;--burg-l:#a33d50;--burg-dim:rgba(124,45,62,.09);
+  --amber:#c4882a;--amber-l:#d9a84a;--amber-dim:rgba(196,136,42,.1);
+  --sage:#3e6147;--sage-l:#5a8265;--sage-dim:rgba(62,97,71,.09);
+  --plum:#52336b;--plum-dim:rgba(82,51,107,.08);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --body:'Libre Baskerville',Georgia,serif;
+  --mono:'Space Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--body);font-size:16px;
+  font-weight:400;line-height:1.75;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.35;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+}
+::selection{background:var(--burg);color:#faf7f2}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:800;
+  background:rgba(250,247,242,.93);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--brd);
+  display:flex;align-items:center;padding:0 32px;height:48px;
+}
+.nl{font-family:var(--serif);font-weight:600;font-size:1rem;color:var(--burg);margin-right:28px;flex-shrink:0;letter-spacing:.01em}
+.nav-links{display:flex;overflow-x:auto;scrollbar-width:none;flex:1;gap:0}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-a{
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--light);padding:0 12px;height:48px;display:flex;align-items:center;
+  border-bottom:2px solid transparent;text-decoration:none;white-space:nowrap;
+  transition:color .2s,border-color .2s;
+}
+.nav-a:hover{color:var(--muted)}
+.nav-a.active{color:var(--burg);border-bottom-color:var(--burg)}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;padding-top:48px;
+  display:grid;grid-template-columns:1fr 400px;
+  position:relative;overflow:hidden;
+  background:var(--ink);
+}
+@media(max-width:820px){#hero{grid-template-columns:1fr}}
+.hero-left{
+  padding:90px 64px 72px;display:flex;flex-direction:column;
+  justify-content:center;position:relative;z-index:2;
+}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:24px;
+  display:flex;align-items:center;gap:14px;
+}
+.hero-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--amber)}
+h1.hero-h1{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(2.8rem,6vw,5.8rem);line-height:1.06;
+  color:#faf7f2;letter-spacing:-.01em;margin-bottom:8px;
+}
+h1.hero-h1 em{font-style:italic;color:var(--amber-l)}
+.hero-h2{
+  font-family:var(--serif);font-weight:300;font-style:italic;
+  font-size:clamp(1.1rem,2.5vw,1.5rem);color:rgba(250,247,242,.55);
+  margin-bottom:36px;line-height:1.45;
+}
+.hero-lf{
+  font-size:.93rem;color:rgba(250,247,242,.5);max-width:480px;
+  line-height:1.75;padding-left:18px;border-left:2px solid var(--burg-l);
+  font-family:var(--body);
+}
+.hero-right{
+  position:relative;overflow:hidden;
+  background:var(--burg);
+}
+.hero-right::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,var(--ink) 0%,transparent 45%);
+  pointer-events:none;
+}
+#heroCanvas{width:100%;height:100%;display:block}
+
+/* ── CHAPTER SYSTEM ── */
+.ch{position:relative;overflow:hidden}
+.ch-inner{max-width:1100px;margin:0 auto;padding:88px 40px;position:relative;z-index:2}
+@media(max-width:600px){.ch-inner{padding:60px 22px}}
+.ch-ghost{
+  position:absolute;right:-10px;top:-10px;
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(9rem,18vw,20rem);
+  color:rgba(124,45,62,.05);line-height:1;
+  pointer-events:none;z-index:1;
+}
+.ch-a{background:var(--bg)}
+.ch-b{background:var(--bg2)}
+.ch-c{background:var(--bg3)}
+
+.ch-hd{
+  display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start;
+  margin-bottom:52px;padding-bottom:32px;border-bottom:1px solid var(--brd);
+}
+.ch-num{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--burg);padding-top:6px;white-space:nowrap;
+}
+.ch-title{
+  font-family:var(--serif);font-weight:400;font-style:italic;
+  font-size:clamp(1.8rem,3.5vw,3rem);line-height:1.1;color:var(--ink);
+}
+.ch-sub{
+  margin-top:8px;font-size:.88rem;color:var(--muted);
+  max-width:560px;line-height:1.7;font-family:var(--body);
+}
+
+/* ── PULL QUOTE ── */
+.pull{
+  border-left:3px solid var(--amber);padding:18px 28px;margin:36px 0;
+  background:var(--amber-dim);border-radius:0 4px 4px 0;
+}
+.pull p{
+  font-family:var(--serif);font-style:italic;font-weight:300;
+  font-size:1.2rem;color:var(--ink);line-height:1.6;
+}
+.pull cite{
+  display:block;margin-top:8px;font-family:var(--mono);
+  font-size:.58rem;letter-spacing:.1em;color:var(--muted);font-style:normal;
+}
+
+/* ── CASE MATRIX ── */
+#matrixArena{
+  position:relative;width:100%;height:480px;
+  background:var(--bg);border:1px solid var(--brd2);border-radius:6px;
+  overflow:hidden;cursor:default;
+  box-shadow:0 4px 24px rgba(24,18,10,.06);
+}
+.mx-axis-h{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:40px;font-family:var(--mono);font-size:.58rem;color:var(--light);letter-spacing:.08em}
+.mx-axis-v{
+  position:absolute;left:0;top:0;bottom:0;width:22px;
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  padding:10px 0;pointer-events:none;
+}
+.mx-axis-v span{
+  font-family:var(--mono);font-size:.56rem;color:var(--light);letter-spacing:.07em;
+  writing-mode:vertical-rl;text-orientation:mixed;
+}
+.mx-axis-v span:first-child{transform:rotate(180deg)}
+.mx-axis-v span:last-child{transform:rotate(180deg)}
+.mx-grid{position:absolute;inset:0;pointer-events:none}
+.mx-quadrant{position:absolute;width:50%;height:50%}
+.mx-quadrant.q1{top:0;right:0;background:rgba(124,45,62,.04)}
+.mx-quadrant.q2{top:0;left:0;background:rgba(62,97,71,.03)}
+.mx-quadrant.q3{bottom:0;left:0;background:rgba(196,136,42,.03)}
+.mx-quadrant.q4{bottom:0;right:0;background:rgba(82,51,107,.03)}
+.mx-label{
+  position:absolute;font-family:var(--mono);font-size:.55rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--brd2);padding:6px;
+}
+.mx-crossH{position:absolute;top:50%;left:0;right:0;height:1px;background:var(--brd);transform:translateY(-.5px)}
+.mx-crossV{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--brd);transform:translateX(-.5px)}
+.mx-card{
+  position:absolute;background:var(--bg);border:1px solid var(--brd2);
+  border-radius:4px;padding:10px 12px;
+  font-family:var(--body);font-size:.75rem;line-height:1.4;color:var(--ink);
+  cursor:grab;user-select:none;box-shadow:0 2px 10px rgba(24,18,10,.1);
+  transition:box-shadow .15s;width:160px;text-align:center;
+  border-left:3px solid var(--amber);
+}
+.mx-card:active{cursor:grabbing;box-shadow:0 8px 28px rgba(24,18,10,.2)}
+.mx-card.placed{border-left-color:var(--burg)}
+.mx-hint{
+  text-align:center;padding:16px;
+  font-family:var(--mono);font-size:.62rem;color:var(--light);letter-spacing:.1em;
+  border-top:1px solid var(--brd);background:var(--bg2);
+}
+
+/* ── INTUITION TEST ── */
+.intuition-arena{
+  background:var(--ink);border-radius:6px;padding:48px 32px;
+  text-align:center;position:relative;overflow:hidden;
+}
+.intuition-stmt{
+  font-family:var(--serif);font-style:italic;font-weight:300;
+  font-size:1.5rem;color:#faf7f2;line-height:1.5;min-height:80px;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .25s;
+}
+.intuition-bar{
+  display:flex;align-items:center;gap:0;margin:28px auto;max-width:520px;
+  background:rgba(250,247,242,.07);border-radius:40px;overflow:hidden;height:50px;
+}
+.i-btn{
+  flex:1;height:100%;border:none;cursor:pointer;
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  transition:all .15s;background:transparent;
+}
+.i-btn.wrong-a{color:var(--burg-l)}
+.i-btn.wrong-a:hover{background:rgba(124,45,62,.3);color:#ff9aa5}
+.i-btn.right-a{color:var(--sage-l)}
+.i-btn.right-a:hover{background:rgba(62,97,71,.3);color:#9ad9a9}
+.i-btn.neutral-a{color:var(--amber)}
+.i-btn.neutral-a:hover{background:rgba(196,136,42,.2);color:var(--amber-l)}
+.i-result{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;
+  color:rgba(250,247,242,.5);min-height:32px;margin-top:8px;
+}
+.i-progress{
+  display:flex;justify-content:center;gap:6px;margin-top:20px;
+}
+.i-dot{width:8px;height:8px;border-radius:50%;background:rgba(250,247,242,.15);transition:background .3s}
+.i-dot.done-right{background:var(--sage-l)}
+.i-dot.done-wrong{background:var(--burg-l)}
+.i-dot.done-n{background:var(--amber)}
+.i-summary{
+  font-family:var(--serif);font-style:italic;font-size:1.1rem;
+  color:rgba(250,247,242,.7);margin-top:24px;display:none;
+}
+.i-next-btn{
+  background:none;border:1px solid rgba(250,247,242,.25);border-radius:3px;
+  padding:8px 22px;color:rgba(250,247,242,.6);
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;transition:all .15s;margin-top:4px;
+}
+.i-next-btn:hover{border-color:var(--amber);color:var(--amber)}
+
+/* ── NORM ANALYZER ── */
+.norm-tabs{display:flex;gap:0;border-bottom:1px solid var(--brd);margin-bottom:28px;overflow-x:auto}
+.norm-tab{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:12px 18px;background:none;border:none;border-bottom:2px solid transparent;
+  cursor:pointer;color:var(--light);transition:all .2s;white-space:nowrap;
+}
+.norm-tab:hover{color:var(--muted)}
+.norm-tab.active{color:var(--burg);border-bottom-color:var(--burg)}
+.norm-scenario{display:none}
+.norm-scenario.active{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:640px){.norm-scenario.active{grid-template-columns:1fr}}
+.norm-box{border-radius:4px;padding:22px}
+.norm-box.d{background:var(--sage-dim);border:1px solid rgba(62,97,71,.2)}
+.norm-box.i{background:var(--burg-dim);border:1px solid rgba(124,45,62,.2)}
+.norm-box h4{font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px}
+.norm-box.d h4{color:var(--sage)}
+.norm-box.i h4{color:var(--burg)}
+.norm-box p{font-size:.84rem;color:var(--muted);line-height:1.7}
+.norm-box blockquote{
+  margin-top:12px;padding:10px 14px;
+  border-radius:3px;font-style:italic;font-size:.85rem;line-height:1.6;
+}
+.norm-box.d blockquote{background:rgba(62,97,71,.08);color:var(--sage-l);border-left:2px solid var(--sage)}
+.norm-box.i blockquote{background:var(--burg-dim);color:var(--burg-l);border-left:2px solid var(--burg)}
+.norm-takeaway{
+  margin-top:16px;padding:14px 18px;background:var(--amber-dim);
+  border-radius:4px;font-size:.83rem;color:var(--muted);line-height:1.65;
+  border-left:2px solid var(--amber);
+}
+.norm-takeaway strong{color:var(--ink)}
+
+/* ── COMMONS SIMULATION ── */
+.commons-wrap{
+  display:grid;grid-template-columns:1fr 300px;gap:28px;align-items:start;
+}
+@media(max-width:700px){.commons-wrap{grid-template-columns:1fr}}
+.commons-field{
+  background:var(--ink);border-radius:6px;padding:28px;
+  position:relative;min-height:380px;
+}
+.commons-title{
+  font-family:var(--serif);font-style:italic;font-weight:300;
+  font-size:1.1rem;color:rgba(250,247,242,.5);margin-bottom:20px;
+  text-align:center;
+}
+.commons-pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:24px}
+.cp-unit{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;transition:all .3s;cursor:default;
+}
+.cp-unit.trust{background:rgba(196,136,42,.25);border:1px solid rgba(196,136,42,.4)}
+.cp-unit.attn{background:rgba(62,97,71,.25);border:1px solid rgba(62,97,71,.4)}
+.cp-unit.cred{background:rgba(124,45,62,.25);border:1px solid rgba(124,45,62,.4)}
+.cp-unit.depleted{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);opacity:.35}
+.commons-meter{
+  display:flex;align-items:center;gap:12px;margin-bottom:18px;
+}
+.commons-bar-wrap{flex:1;height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
+.commons-bar{height:100%;border-radius:4px;transition:width .5s ease,background .5s ease}
+.commons-bar-lbl{font-family:var(--mono);font-size:.6rem;color:rgba(250,247,242,.4);letter-spacing:.08em;width:60px;text-align:right}
+.commons-ctrl{background:var(--bg2);border:1px solid var(--brd);border-radius:6px;padding:22px}
+.commons-ctrl h4{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--burg);margin-bottom:16px}
+.c-btn{
+  display:block;width:100%;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:10px 14px;border-radius:3px;cursor:pointer;margin-bottom:8px;transition:all .15s;text-align:center;
+  border:1px solid var(--brd2);background:none;color:var(--muted);
+}
+.c-btn:hover{border-color:var(--burg);color:var(--burg);background:var(--burg-dim)}
+.c-btn.take{border-color:var(--burg);color:var(--burg)}
+.c-btn.take:hover{background:var(--burg);color:var(--bg)}
+.c-btn.restore{border-color:var(--sage);color:var(--sage)}
+.c-btn.restore:hover{background:var(--sage);color:var(--bg)}
+.commons-log{
+  font-family:var(--mono);font-size:.6rem;color:var(--muted);
+  max-height:100px;overflow-y:auto;line-height:1.8;margin-top:14px;
+  padding:10px;background:var(--bg3);border-radius:3px;border:1px solid var(--brd);
+}
+.commons-insight{
+  margin-top:16px;padding:14px;border-radius:3px;font-size:.8rem;
+  line-height:1.65;border-left:2px solid var(--amber);background:var(--amber-dim);
+  color:var(--muted);
+}
+.commons-insight strong{color:var(--ink)}
+
+/* ── TRANSFER CARDS ── */
+.transfer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.tc{
+  background:var(--bg2);border:1px solid var(--brd);border-radius:6px;
+  padding:22px 18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;
+}
+.tc::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:3px;background:var(--amber);border-radius:6px 0 0 6px;
+}
+.tc.burg::before{background:var(--burg)}
+.tc.sage::before{background:var(--sage)}
+.tc.plum::before{background:var(--plum)}
+.tc:hover{border-color:var(--brd2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(24,18,10,.08)}
+.tc.open{background:var(--bg3);border-color:var(--brd2)}
+.tc-icon{font-size:1.5rem;margin-bottom:10px}
+.tc-title{font-family:var(--serif);font-weight:600;font-size:1rem;color:var(--ink);margin-bottom:4px}
+.tc-sub{font-family:var(--mono);font-size:.58rem;color:var(--muted);letter-spacing:.07em}
+.tc-detail{
+  display:none;grid-column:1/-1;background:var(--ink);border-radius:6px;
+  padding:28px;animation:slideD .22s ease;
+}
+.tc-detail.show{display:block}
+@keyframes slideD{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.tc-detail h3{font-family:var(--serif);font-style:italic;font-weight:300;font-size:1.4rem;color:#faf7f2;margin-bottom:12px}
+.tc-detail ul{list-style:none;padding:0}
+.tc-detail ul li{
+  font-size:.86rem;color:rgba(250,247,242,.65);line-height:1.7;
+  padding:7px 0;border-bottom:1px solid rgba(250,247,242,.07);
+  padding-left:18px;position:relative;
+}
+.tc-detail ul li::before{content:'›';position:absolute;left:0;color:var(--amber)}
+.tc-detail ul li:last-child{border-bottom:none}
+
+/* ── CARDS ── */
+.card-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:24px 0}
+.card{
+  background:var(--bg2);border:1px solid var(--brd);border-radius:6px;
+  padding:22px;position:relative;transition:border-color .2s;
+}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:6px 0 0 6px;background:var(--amber)}
+.card.burg::before{background:var(--burg)}
+.card.sage::before{background:var(--sage)}
+.card-tag{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:7px}
+.card.burg .card-tag{color:var(--burg)}
+.card.sage .card-tag{color:var(--sage)}
+.card-title{font-family:var(--serif);font-size:1.05rem;font-weight:600;color:var(--ink);margin-bottom:7px}
+.card-body{font-size:.83rem;color:var(--muted);line-height:1.65}
+
+/* ── LITERATUR ── */
+.lit-cluster-hd{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--burg);margin:36px 0 14px;padding-bottom:10px;border-bottom:1px solid var(--brd);
+}
+.lit-cluster-hd.amber{color:var(--amber)}
+.lit-cluster-hd.sage{color:var(--sage)}
+.lit-cluster-hd.plum{color:var(--plum)}
+.lit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:8px}
+.lit-card{
+  background:var(--bg2);border:1px solid var(--brd);border-radius:6px;
+  padding:20px;position:relative;transition:border-color .2s;
+}
+.lit-card:hover{border-color:var(--brd2)}
+.lit-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:6px 0 0 6px;background:var(--burg)}
+.lit-card.amber::before{background:var(--amber)}
+.lit-card.sage::before{background:var(--sage)}
+.lit-card.plum::before{background:var(--plum)}
+.lit-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.lit-year{font-family:var(--mono);font-size:.6rem;color:var(--muted)}
+.lit-badge{font-family:var(--mono);font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:2px;border:1px solid var(--brd2);color:var(--muted)}
+.lit-badge.e{color:var(--sage);border-color:rgba(62,97,71,.3)}
+.lit-badge.m{color:var(--burg);border-color:rgba(124,45,62,.3)}
+.lit-badge.a{color:var(--amber);border-color:rgba(196,136,42,.3)}
+.lit-title{font-family:var(--serif);font-size:.97rem;font-weight:600;color:var(--ink);margin-bottom:4px;line-height:1.4}
+.lit-author{font-family:var(--mono);font-size:.62rem;color:var(--muted);margin-bottom:3px}
+.lit-pub{font-family:var(--mono);font-size:.58rem;color:var(--brd2);margin-bottom:10px}
+.lit-body{font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:10px;padding-top:10px;border-top:1px solid var(--brd)}
+.lit-link{font-family:var(--mono);font-size:.6rem;color:var(--burg);text-decoration:none;transition:opacity .15s}
+.lit-link:hover{opacity:.7}
+.lit-link-type{font-family:var(--mono);font-size:.57rem;color:var(--light);margin-left:6px}
+
+/* ── QUIZ ── */
+#quiz{background:var(--ink);border-top:1px solid rgba(250,247,242,.06)}
+.qwrap{max-width:680px;margin:0 auto;padding:80px 40px}
+@media(max-width:600px){.qwrap{padding:60px 20px}}
+.qwrap h2{font-family:var(--serif);font-style:italic;font-weight:300;font-size:2.4rem;color:#faf7f2;margin-bottom:6px}
+.q-sub{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;color:rgba(250,247,242,.35);margin-bottom:36px}
+.q-gate{text-align:center;padding:16px 0 36px}
+.q-gate p{font-size:.88rem;color:rgba(250,247,242,.5);margin-bottom:22px;line-height:1.7}
+.q-name-input{
+  width:100%;max-width:380px;background:rgba(250,247,242,.06);
+  border:1px solid rgba(250,247,242,.18);border-radius:3px;
+  padding:12px 16px;font-family:var(--body);font-size:.95rem;color:#faf7f2;
+  margin-bottom:12px;display:block;margin-left:auto;margin-right:auto;
+  transition:border-color .2s;
+}
+.q-name-input:focus{outline:none;border-color:var(--amber)}
+.q-name-input::placeholder{color:rgba(250,247,242,.25)}
+.qprog{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.qpbar{flex:1;height:2px;background:rgba(250,247,242,.1);border-radius:1px}
+.qpfill{height:100%;background:var(--amber);border-radius:1px;transition:width .35s ease}
+.qpcnt{font-family:var(--mono);font-size:.58rem;color:rgba(250,247,242,.3);letter-spacing:.1em;white-space:nowrap}
+.q-text{font-family:var(--serif);font-style:italic;font-weight:300;font-size:1.2rem;color:#faf7f2;line-height:1.5;margin-bottom:20px}
+.q-opts{display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
+.q-opt{
+  display:flex;align-items:center;gap:14px;padding:13px 18px;
+  background:rgba(250,247,242,.04);border:1px solid rgba(250,247,242,.1);
+  border-radius:3px;cursor:pointer;font-size:.86rem;
+  color:rgba(250,247,242,.55);transition:all .14s;text-align:left;
+  font-family:var(--body);
+}
+.q-opt:hover{border-color:rgba(250,247,242,.25);color:rgba(250,247,242,.85)}
+.q-opt.correct{background:rgba(62,97,71,.15);border-color:var(--sage);color:var(--sage-l)}
+.q-opt.wrong{background:rgba(124,45,62,.12);border-color:var(--burg);color:var(--burg-l)}
+.q-letter{
+  font-family:var(--mono);font-size:.6rem;width:22px;height:22px;
+  border-radius:50%;border:1px solid rgba(250,247,242,.18);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  color:rgba(250,247,242,.35);
+}
+.q-opt.correct .q-letter{border-color:var(--sage);color:var(--sage-l)}
+.q-opt.wrong .q-letter{border-color:var(--burg);color:var(--burg-l)}
+.q-fb{
+  background:rgba(196,136,42,.08);border-left:2px solid var(--amber);
+  padding:13px 18px;font-size:.82rem;color:rgba(250,247,242,.5);
+  line-height:1.7;display:none;margin-bottom:14px;border-radius:0 3px 3px 0;
+  font-family:var(--body);
+}
+.q-fb.show{display:block}
+.qres{text-align:center;padding:20px 0 40px;display:none}
+.qres-num{font-family:var(--serif);font-weight:300;font-size:5.5rem;color:var(--amber);line-height:1}
+.qres-lbl{font-family:var(--mono);font-size:.62rem;color:rgba(250,247,242,.3);letter-spacing:.15em;margin-top:6px}
+.qres-msg{color:rgba(250,247,242,.5);font-size:.88rem;margin-top:16px;line-height:1.65;font-family:var(--body)}
+.token-wrap{margin:28px auto 0;display:flex;justify-content:center}
+.token-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+
+.btn{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:10px 18px;border-radius:3px;cursor:pointer;transition:all .15s;
+  border:1px solid rgba(250,247,242,.2);background:none;color:rgba(250,247,242,.5);
+  display:inline-block;
+}
+.btn:hover{border-color:var(--amber);color:var(--amber)}
+.btn.primary{background:var(--amber);color:var(--ink);border-color:var(--amber)}
+.btn.primary:hover{opacity:.88}
+.btn.burg{border-color:var(--burg);color:var(--burg)}
+.btn.burg:hover{background:var(--burg);color:var(--bg)}
+
+footer{
+  background:var(--ink);border-top:1px solid rgba(250,247,242,.05);
+  padding:22px 40px;text-align:center;
+  font-family:var(--mono);font-size:.57rem;
+  color:rgba(250,247,242,.15);letter-spacing:.12em;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nl">WuDE</span>
+  <div class="nav-links">
+    <a class="nav-a" href="#hero">Intro</a>
+    <a class="nav-a" href="#einstieg">01 Einstieg</a>
+    <a class="nav-a" href="#intuition">02 Intuition</a>
+    <a class="nav-a" href="#normen">03 Normen</a>
+    <a class="nav-a" href="#allmenden">04 Allmenden</a>
+    <a class="nav-a" href="#transfer">05 Transfer</a>
+    <a class="nav-a" href="#literatur">◎ Literatur</a>
+    <a class="nav-a" href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Wirtschafts- und digitale Ethik</div>
+    <h1 class="hero-h1">Warum unsere<br><em>Moral nicht ausreicht</em></h1>
+    <p class="hero-h2">Kooperation, digitale Allmenden und<br>Vertrauensausbeutung im Alltag</p>
+    <p class="hero-lf">Warum wirken viele digitale Praktiken gleichzeitig normal, nützlich und falsch?</p>
+  </div>
+  <div class="hero-right"><canvas id="heroCanvas"></canvas></div>
+</section>
+
+<!-- 01 EINSTIEG -->
+<section id="einstieg" class="ch ch-a">
+  <div class="ch-ghost">01</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">01</div>
+      <div>
+        <div class="ch-title">Moralischer Realitätscheck</div>
+        <div class="ch-sub">Sechs alltägliche Fälle aus digitalen Märkten. Ziehe jede Karte auf die Matrix — horizontal: wie sozial normal wirkt es? Vertikal: wie moralisch problematisch?</div>
+      </div>
+    </div>
+
+    <div id="matrixArena">
+      <div class="mx-grid">
+        <div class="mx-quadrant q1"></div>
+        <div class="mx-quadrant q2"></div>
+        <div class="mx-quadrant q3"></div>
+        <div class="mx-quadrant q4"></div>
+        <div class="mx-crossH"></div>
+        <div class="mx-crossV"></div>
+        <div class="mx-label" style="top:6px;left:28px;color:rgba(124,45,62,.35)">problematisch + normal</div>
+        <div class="mx-label" style="top:6px;right:6px;text-align:right;color:rgba(124,45,62,.6)">problematisch + unnormal</div>
+        <div class="mx-label" style="bottom:6px;left:28px;color:rgba(62,97,71,.45)">ok + normal</div>
+        <div class="mx-label" style="bottom:6px;right:6px;text-align:right;color:rgba(196,136,42,.45)">ok + unnormal</div>
+      </div>
+      <div class="mx-axis-h">
+        <span>← sozial unnormal</span>
+        <span>sozial normal →</span>
+      </div>
+      <div class="mx-axis-v">
+        <span>← moralisch ok</span>
+        <span>moralisch problematisch →</span>
+      </div>
+    </div>
+    <div class="mx-hint" id="mxHint">Alle 6 Karten platziert — diskutieren Sie: Wo fallen „normal" und „richtig" auseinander?</div>
+
+    <div class="pull" style="margin-top:32px">
+      <p>Das Problem digitaler Märkte ist nicht, dass Menschen unmoralisch sind — es ist, dass große Systeme mehr Koordination verlangen, als spontane Moral leisten kann.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 INTUITION -->
+<section id="intuition" class="ch ch-b">
+  <div class="ch-ghost">02</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">02</div>
+      <div>
+        <div class="ch-title">Moralische Intuition kommt zuerst</div>
+        <div class="ch-sub">Urteile intuitiv — wähle sofort, bevor du anfängst zu rationalisieren. Jonathan Haidt zeigt: Begründungen folgen dem Urteil meist nach, nicht umgekehrt. (Haidt, 2001)</div>
+      </div>
+    </div>
+
+    <div class="intuition-arena">
+      <div class="intuition-stmt" id="intStmt">Lade...</div>
+      <div class="intuition-bar" id="intBar">
+        <button class="i-btn wrong-a" onclick="rateInt('wrong')">✗ Falsch</button>
+        <button class="i-btn neutral-a" onclick="rateInt('neutral')">~ Ambivalent</button>
+        <button class="i-btn right-a" onclick="rateInt('right')">✓ Okay</button>
+      </div>
+      <div class="i-result" id="intResult"></div>
+      <div class="i-progress" id="intProgress"></div>
+      <div class="i-summary" id="intSummary"></div>
+    </div>
+
+    <div class="card-row" style="margin-top:32px">
+      <div class="card">
+        <div class="card-tag">Haidt, 2001</div>
+        <div class="card-title">Emotional Dog</div>
+        <div class="card-body">Moralische Urteile entstehen häufig zunächst intuitiv. Die rationale Begründung folgt danach — wie ein Anwalt, der nachträglich ein Urteil verteidigt, das längst gefallen ist.</div>
+      </div>
+      <div class="card burg">
+        <div class="card-tag">Konsequenz</div>
+        <div class="card-title">Appelle greifen nicht</div>
+        <div class="card-body">Wer Menschen nur „aufklärt", verändert ihr Verhalten selten. Intuitionen sitzen tiefer als Argumente. Governance muss die Systemebene adressieren, nicht nur das Bewusstsein.</div>
+      </div>
+      <div class="card sage">
+        <div class="card-tag">Bicchieri, 2006</div>
+        <div class="card-title">Normen als Erwartungen</div>
+        <div class="card-body">Soziale Normen wirken über doppelte Erwartungen: was andere tun, und was andere von uns erwarten. Viele Menschen tun nicht das, was sie privat richtig finden — sondern das, was sozial erwartbar wirkt.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 NORMEN -->
+<section id="normen" class="ch ch-a">
+  <div class="ch-ghost">03</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">03</div>
+      <div>
+        <div class="ch-title">Soziale Normen im digitalen Raum</div>
+        <div class="ch-sub">Wähle ein Szenario und analysiere: Welche deskriptiven und injunktiven Normen wirken? Wo kippt strategische Selbstdarstellung in Vertrauensausbeutung?</div>
+      </div>
+    </div>
+
+    <div class="norm-tabs" id="normTabs">
+      <button class="norm-tab active" onclick="setNorm(0)">Beauty-Influencer</button>
+      <button class="norm-tab" onclick="setNorm(1)">Finfluencer</button>
+      <button class="norm-tab" onclick="setNorm(2)">KI-Assignment</button>
+      <button class="norm-tab" onclick="setNorm(3)">Dating-App-Profil</button>
+      <button class="norm-tab" onclick="setNorm(4)">Online Hate</button>
+    </div>
+    <div id="normBody"></div>
+
+    <div class="pull" style="margin-top:32px">
+      <p>„Sei du selbst" ist auf Plattformen oft bereits sozial und strategisch gerahmt. Normative Dynamiken werden technisch skaliert.</p>
+      <cite>nach Zillich &amp; Riesmeyer, 2021</cite>
+    </div>
+  </div>
+</section>
+
+<!-- 04 ALLMENDEN -->
+<section id="allmenden" class="ch ch-c">
+  <div class="ch-ghost">04</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">04</div>
+      <div>
+        <div class="ch-title">Digitale Allmenden</div>
+        <div class="ch-sub">Vertrauen, Aufmerksamkeit und Glaubwürdigkeit sind kollektive Ressourcen. Beobachte oder nimm teil — und erlebe, wie individuell rationales Verhalten kollektiv zerstört.</div>
+      </div>
+    </div>
+
+    <div class="commons-wrap">
+      <div class="commons-field">
+        <div class="commons-title">Gemeinsame Ressourcen</div>
+
+        <div class="commons-meter">
+          <span style="font-family:var(--mono);font-size:.58rem;color:rgba(250,247,242,.4);width:90px">Vertrauen</span>
+          <div class="commons-bar-wrap"><div class="commons-bar" id="cb-trust" style="width:100%;background:var(--amber)"></div></div>
+          <span class="commons-bar-lbl" id="cl-trust">100%</span>
+        </div>
+        <div class="commons-meter">
+          <span style="font-family:var(--mono);font-size:.58rem;color:rgba(250,247,242,.4);width:90px">Aufmerksamkeit</span>
+          <div class="commons-bar-wrap"><div class="commons-bar" id="cb-attn" style="width:100%;background:var(--sage)"></div></div>
+          <span class="commons-bar-lbl" id="cl-attn">100%</span>
+        </div>
+        <div class="commons-meter">
+          <span style="font-family:var(--mono);font-size:.58rem;color:rgba(250,247,242,.4);width:90px">Glaubwürdigkeit</span>
+          <div class="commons-bar-wrap"><div class="commons-bar" id="cb-cred" style="width:100%;background:var(--burg)"></div></div>
+          <span class="commons-bar-lbl" id="cl-cred">100%</span>
+        </div>
+
+        <div class="commons-pool" id="commonsPool"></div>
+
+        <div class="commons-log" id="commonsLog">Simulation bereit. Wähle eine Aktion →</div>
+        <div class="commons-insight" id="commonsInsight" style="display:none">
+          <strong>Tragik der Allmende:</strong> Individuell rationale Entscheidungen zerstören kollektiv die Ressource. (Hardin, 1968)
+        </div>
+      </div>
+      <div class="commons-ctrl">
+        <h4>Aktionen</h4>
+        <button class="c-btn take" onclick="cAction('clickbait')">📢 Clickbait verbreiten<br><span style="font-size:.55rem;color:var(--muted);display:block;margin-top:2px">−8 Glaubwürdigkeit</span></button>
+        <button class="c-btn take" onclick="cAction('fake')">🤖 KI-Text undeklariert<br><span style="font-size:.55rem;color:var(--muted);display:block;margin-top:2px">−10 Vertrauen</span></button>
+        <button class="c-btn take" onclick="cAction('spam')">📩 Spam-Reviews<br><span style="font-size:.55rem;color:var(--muted);display:block;margin-top:2px">−12 Aufmerksamkeit</span></button>
+        <button class="c-btn take" onclick="cAction('influencer')">💸 Unbez. Werbung<br><span style="font-size:.55rem;color:var(--muted);display:block;margin-top:2px">−7 Vertrauen, −5 Glaub.</span></button>
+        <hr style="border:none;border-top:1px solid var(--brd);margin:12px 0">
+        <button class="c-btn restore" onclick="cAction('transparency')">✓ Transparenz üben<br><span style="font-size:.55rem;color:var(--muted);display:block;margin-top:2px">+8 Vertrauen</span></button>
+        <button class="c-btn restore" onclick="cAction('curate')">◈ Qualität kuratieren<br><span style="font-size:.55rem;color:var(--muted);display:block;margin-top:2px">+6 Aufm. &amp; Glaub.</span></button>
+        <button class="c-btn" onclick="resetCommons()">↺ Zurücksetzen</button>
+      </div>
+    </div>
+
+    <div class="card-row" style="margin-top:28px">
+      <div class="card burg">
+        <div class="card-tag">Hardin, 1968</div>
+        <div class="card-title">Tragik der Allmende</div>
+        <div class="card-body">Individuell rationales Verhalten kann kollektive Ressourcen zerstören. Gilt nicht nur für Weiden und Fischgründe — sondern für Vertrauen, Glaubwürdigkeit und Diskursqualität.</div>
+      </div>
+      <div class="card sage">
+        <div class="card-tag">Ostrom, 1990</div>
+        <div class="card-title">Commons müssen nicht scheitern</div>
+        <div class="card-body">Ostrom zeigt: Mit tragfähigen Regeln, gegenseitiger Kontrolle und institutionellem Design überleben Gemeinschaftsgüter. Gute Governance ist möglich — aber nicht automatisch.</div>
+      </div>
+      <div class="card">
+        <div class="card-tag">Digitale Allmenden</div>
+        <div class="card-title">Was kollektiv ausgebeutet werden kann</div>
+        <div class="card-body">Aufmerksamkeit · Vertrauen · Glaubwürdigkeit · Diskursqualität · Bewertungsintegrität · Sichtbarkeit · Fairness · Verlässlichkeit von Kommunikation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 TRANSFER -->
+<section id="transfer" class="ch ch-b">
+  <div class="ch-ghost">05</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">05</div>
+      <div>
+        <div class="ch-title">Transfer in Praxis und Management</div>
+        <div class="ch-sub">Klicke einen Bereich für konkrete Analyse- und Reflexionsfragen.</div>
+      </div>
+    </div>
+
+    <div class="transfer-grid" id="transferGrid">
+      <div class="tc" id="tc0" onclick="openTC(0)"><div class="tc-icon">🎟</div><div class="tc-title">Ticket-Resale</div><div class="tc-sub">Fairness &amp; Märkte</div></div>
+      <div class="tc burg" id="tc1" onclick="openTC(1)"><div class="tc-icon">📱</div><div class="tc-title">Influencer-Marketing</div><div class="tc-sub">Vertrauen &amp; Parasoziales</div></div>
+      <div class="tc sage" id="tc2" onclick="openTC(2)"><div class="tc-icon">🤖</div><div class="tc-title">KI &amp; Fairness</div><div class="tc-sub">Kollektive Erosion</div></div>
+      <div class="tc plum" id="tc3" onclick="openTC(3)"><div class="tc-icon">⭐</div><div class="tc-title">Plattform-Bewertungen</div><div class="tc-sub">Bewertungsintegrität</div></div>
+      <div class="tc" id="tc4" onclick="openTC(4)"><div class="tc-icon">💬</div><div class="tc-title">Kommunikation &amp; KI</div><div class="tc-sub">Vertrauen &amp; Verantwortung</div></div>
+      <div class="tc burg" id="tc5" onclick="openTC(5)"><div class="tc-icon">🏟</div><div class="tc-title">Event &amp; Community</div><div class="tc-sub">Management &amp; Governance</div></div>
+    </div>
+    <div class="tc-detail" id="tcDetail"></div>
+
+    <div class="pull" style="margin-top:32px">
+      <p>Ethik in digitalen Märkten ist eine Frage institutioneller und technischer Koordination — nicht nur persönlicher Gesinnung.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LITERATUR -->
+<section id="literatur" class="ch ch-a">
+  <div class="ch-ghost">◎</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">◎</div>
+      <div>
+        <div class="ch-title">Weiterführende Literatur</div>
+        <div class="ch-sub">Primärquellen und Standardwerke zu Moral, sozialen Normen, Commons-Governance und digitalen Märkten.</div>
+      </div>
+    </div>
+
+    <p style="font-size:.83rem;color:var(--muted);max-width:620px;margin-bottom:28px;line-height:1.7">Badges: <span style="color:var(--sage);font-family:var(--mono);font-size:.68rem">Einstieg</span> · <span style="color:var(--burg);font-family:var(--mono);font-size:.68rem">Vertiefung</span> · <span style="color:var(--amber);font-family:var(--mono);font-size:.68rem">Klassiker</span></p>
+
+    <div class="lit-cluster-hd">01 · Moral &amp; Intuition</div>
+    <div class="lit-grid">
+      <div class="lit-card">
+        <div class="lit-meta"><span class="lit-year">2001</span><span class="lit-badge m">Vertiefung</span></div>
+        <div class="lit-title">The Emotional Dog and Its Rational Tail</div>
+        <div class="lit-author">Haidt, J.</div>
+        <div class="lit-pub">Psychological Review, 108(4), 814–834</div>
+        <div class="lit-body">Das sozial-intuitionistische Modell moralischer Urteile: Wir urteilen zuerst intuitiv, die rationale Begründung folgt nachträglich. Zentral für das Verständnis, warum Aufklärung allein nicht reicht.</div>
+        <a class="lit-link" href="https://doi.org/10.1037/0033-295X.108.4.814" target="_blank" rel="noopener">→ DOI 10.1037/0033-295X.108.4.814</a><span class="lit-link-type">Permanent</span>
+      </div>
+    </div>
+
+    <div class="lit-cluster-hd sage">02 · Soziale Normen</div>
+    <div class="lit-grid">
+      <div class="lit-card sage">
+        <div class="lit-meta"><span class="lit-year">2006</span><span class="lit-badge m">Vertiefung</span></div>
+        <div class="lit-title">The Grammar of Society</div>
+        <div class="lit-author">Bicchieri, C.</div>
+        <div class="lit-pub">Cambridge University Press</div>
+        <div class="lit-body">Bicchieris Theorie sozialer Normen: Normen wirken über deskriptive und injunktive Erwartungen. Zeigt, warum Menschen nicht das tun, was sie privat richtig finden, sondern das, was sozial erwartbar wirkt.</div>
+        <a class="lit-link" href="https://www.cambridge.org/core/books/grammar-of-society/2B063E9C9621C2340DEFB2BE15B3AEA5" target="_blank" rel="noopener">→ Cambridge University Press</a><span class="lit-link-type">Verlag</span>
+      </div>
+      <div class="lit-card sage">
+        <div class="lit-meta"><span class="lit-year">2015</span><span class="lit-badge m">Vertiefung</span></div>
+        <div class="lit-title">Perceived Legitimacy of Normative Expectations</div>
+        <div class="lit-author">Andrighetto, G., Brandts, J. et al.</div>
+        <div class="lit-pub">Frontiers in Psychology, 6, 1413</div>
+        <div class="lit-body">Wahrgenommene Legitimität erhöht die Normbefolgung — auch wenn niemand zuschaut. Entscheidend für die Frage, wann soziale Normen internalisiert werden.</div>
+        <a class="lit-link" href="https://doi.org/10.3389/fpsyg.2015.01413" target="_blank" rel="noopener">→ DOI 10.3389/fpsyg.2015.01413</a><span class="lit-link-type">Open Access</span>
+      </div>
+      <div class="lit-card sage">
+        <div class="lit-meta"><span class="lit-year">2021</span><span class="lit-badge e">Einstieg</span></div>
+        <div class="lit-title">Personal and Social Norms for Adolescents' Self-Presentation on Instagram</div>
+        <div class="lit-author">Zillich, A. F. &amp; Riesmeyer, C.</div>
+        <div class="lit-pub">Social Media + Society</div>
+        <div class="lit-body">Studie zu deutschen Instagram-Nutzer:innen (14–19 J.): Selbstpräsentation ist stark durch persönliche, deskriptive und injunktive Normen geprägt — „Sei du selbst" ist bereits sozial gerahmt.</div>
+        <a class="lit-link" href="https://epub.ub.uni-muenchen.de/127367/1/Zillich_Riesmeyer_2021_Be_yourself.pdf" target="_blank" rel="noopener">→ Open Access (LMU)</a><span class="lit-link-type">PDF</span>
+      </div>
+    </div>
+
+    <div class="lit-cluster-hd amber">03 · Commons-Governance &amp; Kooperation</div>
+    <div class="lit-grid">
+      <div class="lit-card amber">
+        <div class="lit-meta"><span class="lit-year">1968</span><span class="lit-badge a">Klassiker</span></div>
+        <div class="lit-title">The Tragedy of the Commons</div>
+        <div class="lit-author">Hardin, G.</div>
+        <div class="lit-pub">Science, 162(3859), 1243–1248</div>
+        <div class="lit-body">Das Grundmodell der Allmendentragik: Individuell rationales Verhalten kann kollektive Ressourcen zerstören. Heute auf Vertrauen, Aufmerksamkeit und Diskursqualität in digitalen Märkten übertragbar.</div>
+        <a class="lit-link" href="https://doi.org/10.1126/science.162.3859.1243" target="_blank" rel="noopener">→ DOI 10.1126/science.162.3859.1243</a><span class="lit-link-type">Permanent</span>
+      </div>
+      <div class="lit-card amber">
+        <div class="lit-meta"><span class="lit-year">1990</span><span class="lit-badge a">Klassiker</span></div>
+        <div class="lit-title">Governing the Commons</div>
+        <div class="lit-author">Ostrom, E.</div>
+        <div class="lit-pub">Cambridge University Press</div>
+        <div class="lit-body">Nobelpreisarbeit: Commons müssen nicht scheitern. Mit tragfähigen Regeln, gegenseitiger Kontrolle und institutionellem Design funktioniert kollektive Selbstverwaltung — auch ohne Markt und Staat.</div>
+        <a class="lit-link" href="https://search.worldcat.org/title/governing-the-commons-the-evolution-of-institutions-for-collective-action/oclc/21409003" target="_blank" rel="noopener">→ WorldCat</a><span class="lit-link-type">OCLC 21409003</span>
+      </div>
+    </div>
+
+    <div class="lit-cluster-hd plum">04 · Digitale Märkte &amp; Influencer</div>
+    <div class="lit-grid">
+      <div class="lit-card plum">
+        <div class="lit-meta"><span class="lit-year">2024</span><span class="lit-badge e">Einstieg</span></div>
+        <div class="lit-title">Less is More: Engagement with Social Media Influencers</div>
+        <div class="lit-author">van der Harst, J. P. &amp; Angelopoulos, S.</div>
+        <div class="lit-pub">Journal of Business Research, 181, 114746</div>
+        <div class="lit-body">Aktuelle Forschung zu Content-Merkmalen und Engagement bei Influencern: Digitale Märkte monetarisieren nicht nur Aufmerksamkeit, sondern auch Vertrauenssignale.</div>
+        <a class="lit-link" href="https://doi.org/10.1016/j.jbusres.2024.114746" target="_blank" rel="noopener">→ DOI 10.1016/j.jbusres.2024.114746</a><span class="lit-link-type">Permanent</span>
+      </div>
+      <div class="lit-card plum">
+        <div class="lit-meta"><span class="lit-year">2024</span><span class="lit-badge e">Einstieg</span></div>
+        <div class="lit-title">Parasocial Interactions with Real and Virtual Influencers</div>
+        <div class="lit-author">Stein, J.-P., Breves, P. &amp; Anders, N.</div>
+        <div class="lit-pub">New Media &amp; Society, 26(6), 3433–3453</div>
+        <div class="lit-body">Parasoziale Interaktionen entstehen auch mit virtuellen Influencern — wahrgenommene Ähnlichkeit und Menschlichkeit spielen dabei eine entscheidende Rolle.</div>
+        <a class="lit-link" href="https://handle.uba.uva.nl/personal/pure/en/publications/parasocial-interactions-with-real-and-virtual-influencers-the-role-of-perceived-similarity-and-humanlikeness%2833d13b9c-3f1c-4b77-b17e-6daae1dcb008%29.html" target="_blank" rel="noopener">→ UvA Repository</a><span class="lit-link-type">Open Access</span>
+      </div>
+      <div class="lit-card plum">
+        <div class="lit-meta"><span class="lit-year">2024</span><span class="lit-badge m">Vertiefung</span></div>
+        <div class="lit-title">Responses to Online Hate — Participatory-Moral Abilities</div>
+        <div class="lit-author">de Leeuw, R. N. H. et al.</div>
+        <div class="lit-pub">International Journal of Hate Studies</div>
+        <div class="lit-body">Warum reagieren Jugendliche bei Online Hate oft nicht? Prosoziales Verhalten hängt von participatory-moral abilities ab — selbst wenn Menschen etwas falsch finden, handeln sie nicht automatisch dagegen.</div>
+        <a class="lit-link" href="https://internationalhatestudies.com/publications/understanding-the-role-of-participatory-moral-abilities-motivation-and-behavior-in-european-adolescents-responses-to-online-hate/" target="_blank" rel="noopener">→ International Hate Studies</a><span class="lit-link-type">Open Access</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="qwrap">
+    <h2>Wissen testen</h2>
+    <div class="q-sub">10 Fragen · Moral, Normen &amp; Digitale Allmenden</div>
+
+    <div id="qGate" class="q-gate">
+      <p>Geben Sie Ihren Namen ein — Ihr Ergebnis<br>wird gespeichert und Sie erhalten ein Token.</p>
+      <input class="q-name-input" id="qName" type="text" placeholder="Ihr Name oder Kürzel …" maxlength="40"
+        onkeydown="if(event.key==='Enter')startQ()">
+      <button class="btn primary" onclick="startQ()" style="padding:11px 28px">Quiz starten →</button>
+    </div>
+
+    <div id="qMain" style="display:none">
+      <div class="qprog"><div class="qpbar"><div class="qpfill" id="qfill"></div></div><div class="qpcnt" id="qcnt">1 / 10</div></div>
+      <div id="qbody"></div>
+    </div>
+
+    <div class="qres" id="qres">
+      <div class="qres-num" id="qrn"></div>
+      <div class="qres-lbl">von 10 Fragen richtig</div>
+      <div class="qres-msg" id="qrm"></div>
+      <div class="token-wrap" id="tokenWrap"></div>
+      <div class="token-actions">
+        <button class="btn primary" onclick="dlToken()" style="padding:10px 22px">Token herunterladen</button>
+        <button class="btn" onclick="restartQ()" style="padding:10px 18px">↺ Nochmals</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>An explorable designed by Prof. Thomas Petzold Ph.D. and Claude · 2026</footer>
+
+<script>
+// ── NAV OBSERVER ──
+const secIds=['hero','einstieg','intuition','normen','allmenden','transfer','literatur','quiz'];
+const navAs=document.querySelectorAll('.nav-a');
+secIds.forEach(id=>{
+  const el=document.getElementById(id);if(!el)return;
+  new IntersectionObserver(es=>{if(es[0].isIntersecting){navAs.forEach(a=>a.classList.remove('active'));const i=secIds.indexOf(id);if(i>=0&&navAs[i])navAs[i].classList.add('active');}},{threshold:.25}).observe(el);
+});
+
+// ── HERO CANVAS ──
+(function(){
+  const cv=document.getElementById('heroCanvas'),ctx=cv.getContext('2d');
+  let ps=[], started=false;
+  function init(){
+    cv.width=cv.offsetWidth||cv.parentElement.offsetWidth||400;
+    cv.height=cv.offsetHeight||cv.parentElement.offsetHeight||600;
+    if(!cv.width||!cv.height)return;
+    ps=Array.from({length:60},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,r:1+Math.random()*3,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,a:Math.random()}));
+  }
+  function draw(){
+    const W=cv.width,H=cv.height;
+    if(!W||!H){requestAnimationFrame(draw);return;}
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#7c2d3e';ctx.fillRect(0,0,W,H);
+    if(W>0&&H>0){
+      const g=ctx.createRadialGradient(W*.4,H*.3,0,W*.4,H*.3,Math.max(1,W*.7));
+      g.addColorStop(0,'rgba(196,136,42,.15)');g.addColorStop(1,'transparent');
+      ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    }
+    ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;});
+    for(let i=0;i<ps.length;i++)for(let j=i+1;j<ps.length;j++){
+      const dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<90){ctx.beginPath();ctx.moveTo(ps[i].x,ps[i].y);ctx.lineTo(ps[j].x,ps[j].y);
+        ctx.strokeStyle='rgba(196,136,42,'+(1-d/90)*.2+')';ctx.lineWidth=.7;ctx.stroke();}
+    }
+    ps.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(250,220,180,'+(p.a*.6)+')';ctx.fill();});
+    requestAnimationFrame(draw);
+  }
+  // Defer init so layout is complete
+  requestAnimationFrame(()=>{init();if(ps.length)draw();});
+  window.addEventListener('resize',()=>{init();});
+})();
+
+// ── CASE MATRIX ──
+(function(){
+  const arena=document.getElementById('matrixArena');
+  if(!arena)return;
+  const cases=[
+    {txt:'KI für Assignment — obwohl unklar, was erlaubt ist'},
+    {txt:'Konzerttickets mit hohem Aufschlag weiterverkaufen'},
+    {txt:'Online Hate sehen und nicht reagieren'},
+    {txt:'Problematischen Post liken — „weil es Ironie ist"'},
+    {txt:'Virtuellem Influencer vertrauen &amp; Produkte kaufen'},
+    {txt:'„Authentisch" posten, aber sehr strategisch'},
+  ];
+  let drag=null,ox=0,oy=0;
+  const cards=[];
+  cases.forEach((c,i)=>{
+    const el=document.createElement('div');
+    el.className='mx-card';el.innerHTML=c.txt;
+    el.style.left='8px';el.style.top='8px';// safe initial position
+    el.style.zIndex=2;
+    arena.appendChild(el);
+    el.addEventListener('mousedown',e=>{drag=el;ox=e.clientX-el.offsetLeft;oy=e.clientY-el.offsetTop;el.style.zIndex=10;e.preventDefault();});
+    el.addEventListener('touchstart',e=>{drag=el;const t=e.touches[0];ox=t.clientX-el.offsetLeft;oy=t.clientY-el.offsetTop;el.style.zIndex=10;},{passive:false});
+    cards.push(el);
+  });
+  // Position cards after layout is complete
+  requestAnimationFrame(()=>{
+    const AW=arena.offsetWidth||600, AH=arena.offsetHeight||480;
+    const cols=3, rows=2, cw=160, ch=60;
+    cards.forEach((el,i)=>{
+      const col=i%cols, row=Math.floor(i/cols);
+      const x=Math.round(AW/(cols+1)*(col+1)-cw/2);
+      const y=Math.round(AH/(rows+1)*(row+1)-ch/2);
+      el.style.left=Math.max(4,Math.min(x,AW-cw-4))+'px';
+      el.style.top=Math.max(4,Math.min(y,AH-ch-4))+'px';
+    });
+  });
+  function moveEl(e){
+    if(!drag)return;
+    const t=e.touches?e.touches[0]:e;
+    const AW=arena.offsetWidth,AH=arena.offsetHeight;
+    let x=t.clientX-ox,y=t.clientY-oy;
+    x=Math.max(0,Math.min(x,AW-drag.offsetWidth));
+    y=Math.max(0,Math.min(y,AH-drag.offsetHeight));
+    drag.style.left=x+'px';drag.style.top=y+'px';
+  }
+  function endDrag(){if(drag){drag.classList.add('placed');drag.style.zIndex=2;drag=null;}}
+  document.addEventListener('mousemove',moveEl);
+  document.addEventListener('mouseup',endDrag);
+  document.addEventListener('touchmove',moveEl,{passive:false});
+  document.addEventListener('touchend',endDrag);
+})();
+
+// ── INTUITION TEST ──
+const intStmts=[
+  {txt:'Wenn alle KI für Assignments nutzen, ist es eigentlich fair.',fb:'Die Normalisierung von Verhalten macht es nicht moralisch legitim — aber verändert die soziale Erwartungsstruktur grundlegend.'},
+  {txt:'Konzerttickets für das Dreifache weiterzuverkaufen ist legaler Markt.',fb:'Rechtlich oft ja. Moralisch strittig: Wer profitiert — und wer verliert Zugang zu Kultur durch strukturelle Kaufkraftunterschiede?'},
+  {txt:'Wenn ich nichts sage, bin ich kein Teil des Problems.',fb:'Hardin würde widersprechen: Unterlassen ist eine Entscheidung. Die Allmende erodiert auch durch Passivität.'},
+  {txt:'Strategische Authentizität ist ein Widerspruch in sich.',fb:'Plattformen belohnen, was sichtbar, imitierbar und emotional aktivierend ist. „Authentisch sein" ist oft bereits sozial und ökonomisch gerahmt. (Zillich & Riesmeyer, 2021)'},
+  {txt:'Virtuelle Influencer können kein echtes Vertrauen erzeugen.',fb:'Stein et al. (2024) zeigen: Parasoziale Interaktionen entstehen auch mit virtuellen Avataren — und damit auch echte Vertrauenseffekte und Kaufentscheidungen.'},
+  {txt:'Wer Hate nicht meldet, stimmt implizit zu.',fb:'De Leeuw et al. (2024): Auch bei klarer Ablehnung handeln Menschen nicht automatisch dagegen — Brücke zu Handlungsbarrieren und kollektiver Untätigkeit.'},
+];
+let intI=0,intAnswers=[];
+function initInt(){
+  intAnswers=[];intI=0;
+  const stmt=document.getElementById('intStmt');
+  const prog=document.getElementById('intProgress');
+  const res=document.getElementById('intResult');
+  const sum=document.getElementById('intSummary');
+  const bar=document.getElementById('intBar');
+  if(!stmt||!prog||!res||!sum)return;
+  stmt.textContent=intStmts[0].txt;
+  prog.innerHTML=intStmts.map(()=>'<div class="i-dot"></div>').join('');
+  res.textContent='';
+  sum.style.display='none';
+  if(bar)bar.style.display='flex';
+}
+function rateInt(v){
+  if(intI>=intStmts.length)return;
+  const stmt=intStmts[intI];intAnswers.push(v);
+  const result=document.getElementById('intResult');
+  const stmtEl=document.getElementById('intStmt');
+  const sumEl=document.getElementById('intSummary');
+  const dots=document.querySelectorAll('.i-dot');
+  const bar=document.getElementById('intBar');
+  if(!result||!stmtEl||!sumEl)return;
+  // mark dot
+  if(dots[intI])dots[intI].classList.add(v==='right'?'done-right':v==='wrong'?'done-wrong':'done-n');
+  intI++;
+  // show feedback persistently — hide rating buttons, show Weiter
+  if(bar)bar.style.display='none';
+  result.innerHTML=stmt.fb+'<br><br><button class="i-next-btn" onclick="nextInt()">Weiter →</button>';
+}
+function nextInt(){
+  const result=document.getElementById('intResult');
+  const stmtEl=document.getElementById('intStmt');
+  const sumEl=document.getElementById('intSummary');
+  const bar=document.getElementById('intBar');
+  if(!result||!stmtEl||!sumEl)return;
+  if(intI<intStmts.length){
+    stmtEl.style.opacity=0;
+    setTimeout(function(){stmtEl.textContent=intStmts[intI].txt;stmtEl.style.opacity=1;},220);
+    result.textContent='';
+    if(bar)bar.style.display='flex';
+  }else{
+    stmtEl.textContent='Alle Aussagen bewertet.';
+    result.textContent='';
+    if(bar)bar.style.display='none';
+    sumEl.style.display='block';
+    sumEl.textContent='Haidt: Das ist normal. Urteile kamen zuerst — Begründungen folgten. So funktioniert moralische Intuition.';
+  }
+}
+initInt();
+
+// ── NORM ANALYZER ──
+const NORMS=[
+  {title:'Beauty-Influencer',
+   d:'Andere posten täglich Filter-Bilder und Werbung ohne Kennzeichnung. Der Feed zeigt: So wirkt erfolgreich.',
+   i:'Man sollte authentisch sein — aber auch strategisch sichtbar. Engagement ist Pflicht, Überprüfbarkeit optional.',
+   dq:'"Alle machen das so."',iq:'"Du musst sichtbar sein — sonst existierst du nicht."',
+   tw:'Wo endet persönliche Marke — und wo beginnt Vertrauensausbeutung? Wann wird parasoziale Nähe zur ökonomischen Ressource? (van der Harst & Angelopoulos, 2024)'},
+  {title:'Finfluencer',
+   d:'Finanzberatung ohne Zulassung ist auf TikTok Standard. Millionen Aufrufe signalisieren: Das ist legitim.',
+   i:'Du solltest informieren — aber auch Disclaimer machen. Aber: Länge schadet dem Algorithmus.',
+   dq:'"Wer Reichweite hat, wird als Experte behandelt."',iq:'"Gib Empfehlungen, aber halte dich rechtlich bedeckt."',
+   tw:'Wer trägt Verantwortung, wenn Vertrauen technisch produziert, aber inhaltlich unterlaufen wird? Ist Glaubwürdigkeit eine Allmende?'},
+  {title:'KI-Assignment',
+   d:'In Gruppen-Chats zirkulieren Prompt-Sammlungen. Es wirkt wie kollektiver Lernfortschritt — nicht wie Betrug.',
+   i:'Eigenleistung wird erwartet. Aber was zählt als Eigenleistung, wenn alle dieselben Tools nutzen?',
+   dq:'"Alle nutzen GPT — wer es nicht tut, ist ineffizient."',iq:'"Eigenleistung wird erwartet — aber niemand definiert sie neu."',
+   tw:'Wenn „alle" KI nutzen: Entsteht dann ein neues Normal? Oder erodiert die Fairness des Bewertungssystems als kollektive Ressource?'},
+  {title:'Dating-App-Profil',
+   d:'Profil-Optimierung, kuratierte Fotos und strategische Texte sind der Standard. Authentizität ist ein Ideal.',
+   i:'Du sollst ehrlich sein. Aber auch attraktiv wirken — und die Plattform belohnt, was klickt.',
+   dq:'"Alle optimieren ihr Profil — sonst bist du chancenlos."',iq:'"Täuschung ist falsch — aber kleine Übertreibungen sind normal."',
+   tw:'Wann kippt strategische Selbstdarstellung in Vertrauensausbeutung? Gilt dein Profil als Versprechen?'},
+  {title:'Online Hate',
+   d:'Nicht-Einmischung ist die Norm. Andere sehen und scrollen weiter — warum sollte ich anders handeln?',
+   i:'Du solltest helfen — aber Einmischung ist riskant, aufwändig und sozial selten erwartet.',
+   dq:'"Alle scrollen drüber weg."',iq:'"Man sollte eingreifen — aber praktisch macht es kaum jemand."',
+   tw:'De Leeuw et al. (2024): Selbst bei klarer Ablehnung handeln Menschen nicht automatisch. Moral reicht nicht — es braucht participatory abilities und institutionelle Räume.'},
+];
+let normI=0;
+function setNorm(i){
+  normI=i;
+  document.querySelectorAll('.norm-tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  const n=NORMS[i];
+  document.getElementById('normBody').innerHTML=`
+    <div class="norm-scenario active">
+      <div class="norm-box d">
+        <h4>Deskriptive Norm</h4>
+        <p>${n.d}</p>
+        <blockquote>${n.dq}</blockquote>
+      </div>
+      <div class="norm-box i">
+        <h4>Injunktive Norm</h4>
+        <p>${n.i}</p>
+        <blockquote>${n.iq}</blockquote>
+      </div>
+    </div>
+    <div class="norm-takeaway"><strong>Reflexion:</strong> ${n.tw}</div>`;
+}
+setNorm(0);
+
+// ── COMMONS SIMULATION ──
+let cState={trust:100,attn:100,cred:100};
+function initPool(){
+  const pool=document.getElementById('commonsPool');
+  pool.innerHTML='';
+  for(let i=0;i<30;i++){
+    const d=document.createElement('div');d.className='cp-unit trust';d.textContent='🔑';
+    pool.appendChild(d);
+  }
+  for(let i=0;i<30;i++){
+    const d=document.createElement('div');d.className='cp-unit attn';d.textContent='👁';
+    pool.appendChild(d);
+  }
+  for(let i=0;i<30;i++){
+    const d=document.createElement('div');d.className='cp-unit cred';d.textContent='⭐';
+    pool.appendChild(d);
+  }
+}
+function updateMeters(){
+  const colors={trust:'#c4882a',attn:'#3e6147',cred:'#7c2d3e'};
+  ['trust','attn','cred'].forEach(k=>{
+    const pct=Math.max(0,cState[k]);
+    const bar=document.getElementById('cb-'+k),lbl=document.getElementById('cl-'+k);
+    if(!bar||!lbl)return;
+    bar.style.width=pct+'%';
+    bar.style.background=pct>30?colors[k]:'#5a2020';
+    lbl.textContent=Math.round(pct)+'%';
+  });
+  const total=cState.trust+cState.attn+cState.cred;
+  const units=document.querySelectorAll('.cp-unit');
+  const active=Math.round((total/300)*90);
+  units.forEach((u,i)=>u.classList.toggle('depleted',i>=active));
+  const insight=document.getElementById('commonsInsight');
+  if(insight&&total<150)insight.style.display='block';
+}
+function logC(msg){
+  const log=document.getElementById('commonsLog');
+  if(!log)return;
+  log.innerHTML=`<span style="color:#a33d50">→</span> ${msg}<br>`+log.innerHTML;
+}
+function cAction(type){
+  const acts={
+    clickbait:{trust:0,attn:0,cred:-8,msg:'Clickbait verbreitet — Glaubwürdigkeit sinkt.'},
+    fake:{trust:-10,attn:0,cred:0,msg:'KI-Text undeklariert gepostet — Vertrauen erodiert.'},
+    spam:{trust:0,attn:-12,cred:0,msg:'Spam-Reviews platziert — Aufmerksamkeitsökonomie leidet.'},
+    influencer:{trust:-7,attn:0,cred:-5,msg:'Undeklarierte Werbung — Vertrauen &amp; Glaubwürdigkeit sinken.'},
+    transparency:{trust:8,attn:0,cred:0,msg:'Transparenz geübt — Vertrauen wächst.'},
+    curate:{trust:0,attn:6,cred:6,msg:'Qualität kuratiert — Aufmerksamkeit &amp; Glaubwürdigkeit steigen.'},
+  };
+  const a=acts[type];if(!a)return;
+  cState.trust=Math.max(0,Math.min(100,cState.trust+(a.trust||0)));
+  cState.attn=Math.max(0,Math.min(100,cState.attn+(a.attn||0)));
+  cState.cred=Math.max(0,Math.min(100,cState.cred+(a.cred||0)));
+  updateMeters();logC(a.msg);
+}
+function resetCommons(){
+  cState={trust:100,attn:100,cred:100};
+  initPool();updateMeters();
+  const log=document.getElementById('commonsLog');
+  if(log)log.textContent='Simulation zurückgesetzt.';
+  const ins=document.getElementById('commonsInsight');
+  if(ins)ins.style.display='none';
+}
+initPool();updateMeters();
+
+// ── TRANSFER CARDS ──
+const TC=[
+  {title:'Ticket-Resale',body:[
+    'Warum genügt "Fairness" als persönlicher Wert nicht für Ticketverteilung?',
+    'Wer gewinnt kurzfristig — wer verliert langfristig Zugang zu Kultur?',
+    'Ist faire Zugänglichkeit eine Allmende, die durch Resale erodiert?',
+    'Was würde Hardin fordern? Was würde Ostrom anders lösen?',
+    'Welche Governance-Regeln würden die Situation verbessern?',
+  ]},
+  {title:'Influencer-Marketing',body:[
+    'Wann wird parasoziale Nähe zur ökonomischen Ressource?',
+    'Wie entstehen Vertrauenseffekte bei virtuellen Influencern? (Stein et al., 2024)',
+    'Wo kippt strategische Selbstdarstellung in Vertrauensausbeutung?',
+    'Community-Vertrauen als ökonomische Kernressource — wie ist es zu schützen?',
+    'Was passiert, wenn Authentizität strategisch simuliert wird?',
+  ]},
+  {title:'KI &amp; Fairness',body:[
+    'Wo verläuft die Grenze zwischen Effizienz und unfairer Vorteilsnahme?',
+    'Wenn "alle" KI nutzen: Entsteht ein neues Normal oder erodiert Fairness?',
+    'Wird hier eine gemeinsame Ressource ausgebeutet — Fairness, Bewertbarkeit, Vertrauen?',
+    'Was wäre gerechter als bloße Verbote? Welche Regeln würde Ostrom vorschlagen?',
+    'Wer trägt Verantwortung: Nutzende, Plattformen, Bildungsinstitutionen?',
+  ]},
+  {title:'Plattform-Bewertungen',body:[
+    'Ist Bewertungsintegrität eine Allmende — und wie wird sie ausgebeutet?',
+    'Fake-Reviews, Spam-Ratings, Incentive-Bewertungen: Wer schädigt wen?',
+    'Wann verlieren Bewertungssysteme ihre Informationsfunktion vollständig?',
+    'Welche institutionellen Regeln (Ostrom) könnten hier wirken?',
+    'Gibt es moralische Pflichten für Plattformen gegenüber Nutzer:innen?',
+  ]},
+  {title:'Kommunikation &amp; KI',body:[
+    'Warum reicht "Der Chatbot soll höflich sein" nicht als ethischer Standard?',
+    'Wann erzeugt Empathie-Simulation falsche Nähe und falsches Vertrauen?',
+    'Nicht jede gute Antwort ist vertrauenswürdig — wie ist der Unterschied erkennbar?',
+    'Wer trägt Verantwortung, wenn Vertrauen technisch produziert wird?',
+    'Wie sollte KI-generierte Kommunikation ethisch transparent gestaltet sein?',
+  ]},
+  {title:'Event &amp; Community',body:[
+    'Warum genügt "Fairness" als Wert nicht für Ticketverteilung und Zugang?',
+    'Wann wird Community-Vertrauen zur ökonomischen Kernressource?',
+    'Was passiert, wenn authentische Gemeinschaft strategisch simuliert wird?',
+    'Warum kann virale Aufmerksamkeit kollektiv wertvoll und zerstörerisch sein?',
+    'Welche Governance-Architekturen schützen das kollektive Gut Community?',
+  ]},
+];
+let openTCi=null;
+function openTC(i){
+  const same=openTCi===i;openTCi=same?null:i;
+  document.querySelectorAll('.tc').forEach((t,j)=>t.classList.toggle('open',j===i&&!same));
+  const det=document.getElementById('tcDetail');
+  if(!det)return;
+  if(same){det.classList.remove('show');return;}
+  const d=TC[i];if(!d)return;
+  det.innerHTML=`<h3>${d.title}</h3><ul>${d.body.map(b=>`<li>${b}</li>`).join('')}</ul>`;
+  det.classList.add('show');
+  const grid=document.getElementById('transferGrid');
+  if(grid)grid.after(det);
+}
+
+// ── QUIZ ──
+const SHEETS_URL='IHRE_APPS_SCRIPT_URL_HIER_EINTRAGEN';
+const QS=[
+  {q:'Was beschreibt Jonathan Haidts sozial-intuitionistisches Modell moralischer Urteile?',opts:['Moralische Urteile entstehen durch rationale Analyse und Abwägung','Intuitive Urteile entstehen zuerst; Begründungen folgen danach','Moralische Urteile sind immer konsistent und widerspruchsfrei','Emotionen spielen in moralischen Urteilen keine Rolle'],c:1,fb:'Haidt (2001): Moralische Urteile entstehen häufig intuitiv, fast unmittelbar. Die rationale Begründung folgt danach — wie ein Anwalt, der ein bereits gefälltes Urteil verteidigt.'},
+  {q:'Was ist der Unterschied zwischen deskriptiver und injunktiver Norm?',opts:['Deskriptive Normen sind gesetzlich verbindlich; injunktive nicht','Deskriptive Normen beschreiben, was andere tun; injunktive, was erwartet oder gefordert wird','Deskriptive Normen entstehen in kleinen Gruppen; injunktive nur auf Plattformen','Beide Begriffe bedeuten dasselbe — deskriptiv und injunktiv sind Synonyme'],c:1,fb:'Bicchieri (2006): Deskriptive Normen beschreiben, was andere faktisch tun ("alle machen das so"). Injunktive Normen drücken aus, was von uns erwartet oder moralisch gefordert wird.'},
+  {q:'Was beschreibt die „Tragik der Allmende" nach Hardin (1968)?',opts:['Staatliche Regulierung zerstört immer gemeinsame Ressourcen','Individuell rationales Verhalten kann kollektive Ressourcen erschöpfen','Allmenden sind prinzipiell gescheiterte Wirtschaftsformen','Nur Eigentumsrechte können kollektive Güter schützen'],c:1,fb:'Hardin (1968): Jedes Individuum handelt rational für sich — und zerstört dabei gemeinsam die kollektive Ressource. Dieses Muster lässt sich auf digitale Güter wie Vertrauen, Aufmerksamkeit und Glaubwürdigkeit übertragen.'},
+  {q:'Wie widerlegt Elinor Ostrom Hardins Schlussfolgerung?',opts:['Sie zeigt, dass Gemeingüter immer verstaatlicht werden müssen','Sie belegt, dass Commons ohne Regeln immer scheitern','Sie zeigt, dass selbstorganisierte Regeln und Institutionen Commons erfolgreich schützen können','Sie argumentiert, dass der freie Markt Allmenden automatisch schützt'],c:2,fb:'Ostrom (1990): Commons müssen nicht scheitern. Mit tragfähigen Regeln, gegenseitiger Kontrolle und institutionellem Design funktioniert kollektive Selbstverwaltung — ohne Markt und ohne Staat.'},
+  {q:'Welche dieser Ressourcen kann in digitalen Kontexten eine Allmende sein?',opts:['Nur natürliche Ressourcen wie Wasser und Luft','Ausschließlich physische Güter und Infrastruktur','Vertrauen, Aufmerksamkeit, Glaubwürdigkeit und Diskursqualität','Nur monetäre Ressourcen und Kapitalbestände'],c:2,fb:'Digitale Allmenden umfassen immaterielle kollektive Ressourcen: Vertrauen, Aufmerksamkeit, Glaubwürdigkeit, Bewertungsintegrität, Fairness — all das kann durch individuell rationales Verhalten kollektiv erodiert werden.'},
+  {q:'Warum reichen moralische Appelle in digitalen Märkten oft nicht aus?',opts:['Weil Menschen grundsätzlich unmoralisch sind','Weil moralische Intuitionen begrenzt, gruppenorientiert und schlecht skalierbar sind','Weil digitale Märkte keine moralischen Grundlagen kennen','Weil Regulierung immer wirksamer ist als Appelle'],c:1,fb:'Moral ist historisch für kleine Gruppen gebaut — mit persönlicher Nähe, Wiedererkennung und sozialer Sanktion. Diese Mechanismen skalieren schlecht in große, anonyme digitale Systeme. Es braucht institutionelle und technische Koordination.'},
+  {q:'Was zeigen Stein et al. (2024) zu virtuellen Influencern?',opts:['Virtuelle Influencer erzeugen kein echtes Engagement','Parasoziale Interaktionen entstehen nur mit realen Personen','Parasoziale Interaktionen und Vertrauenseffekte entstehen auch mit virtuellen Influencern','Virtuelle Influencer werden als weniger glaubwürdig eingestuft als reale'],c:2,fb:'Stein et al. (2024): Parasoziale Interaktionen — das Erleben einer persönlichen Beziehung — entstehen auch mit virtuellen Avataren. Wahrgenommene Ähnlichkeit und Menschlichkeit spielen dabei eine entscheidende Rolle.'},
+  {q:'Warum melden viele Jugendliche Online Hate nicht, obwohl sie es falsch finden?',opts:['Weil sie Online Hate nicht als Problem erkennen','Weil Meldeprozesse technisch nicht existieren','Weil prosoziales Handeln von participatory-moral abilities abhängt, die situativ variieren','Weil soziale Normen Online Hate generell tolerieren'],c:2,fb:'De Leeuw et al. (2024): Selbst bei klarer moralischer Ablehnung handeln Menschen nicht automatisch dagegen. Prosoziales Verhalten hängt von participatory-moral abilities, Motivation und situativen Faktoren ab.'},
+  {q:'Was meint die Aussage „Normative Dynamiken werden technisch skaliert"?',opts:['Technologie kann moralische Urteile ersetzen','Plattformalgorithmen verstärken besonders das, was sichtbar, belohnbar und emotional aktivierend ist','Technische Systeme sind immer moralisch neutral','Skalierung eliminiert normative Konflikte automatisch'],c:1,fb:'Plattformen verstärken Normen nicht neutral — sie bevorzugen algorithmisch, was klickt, teilt und reagiert. Dadurch werden bestimmte normative Dynamiken (z. B. Empörung, Konformität, strategische Authentizität) technisch amplifiziert.'},
+  {q:'Was folgt aus dem Satz: „Das Problem digitaler Märkte ist nicht, dass Menschen unmoralisch sind"?',opts:['Ethik ist in digitalen Märkten irrelevant','Technische Systeme brauchen keine ethischen Grundlagen','Digitale Ethik braucht mehr als Appelle: Regeln, Anreize und institutionelles Design','Individuelle Gesinnung reicht aus, wenn sie konsequent praktiziert wird'],c:2,fb:'Große Systeme verlangen mehr Koordination, als spontane Moral leisten kann. Digitale Ethik ist deshalb eine Frage institutioneller und technischer Koordination — Regeln, Anreize, Plattformdesign und Governance, nicht nur persönliche Gesinnung.'},
+];
+let qUser='',qI=0,qA=[],qDone=false,_svg='';
+function startQ(){
+  const n=document.getElementById('qName').value.trim();
+  if(!n){document.getElementById('qName').style.borderColor='var(--burg)';return;}
+  qUser=n;qI=0;qA=[];qDone=false;
+  document.getElementById('qGate').style.display='none';
+  document.getElementById('qMain').style.display='block';
+  drawQ();
+}
+function drawQ(){
+  const q=QS[qI],dn=qA[qI]!==undefined;
+  document.getElementById('qfill').style.width=(qI/QS.length*100)+'%';
+  document.getElementById('qcnt').textContent=`${qI+1} / ${QS.length}`;
+  let h=`<div class="q-text">${q.q}</div><div class="q-opts">`;
+  q.opts.forEach((o,i)=>{
+    let c='';if(dn){if(i===q.c)c='correct';else if(i===qA[qI])c='wrong';}
+    h+=`<div class="q-opt ${c}" onclick="ansQ(${i})"><span class="q-letter">${String.fromCharCode(65+i)}</span><span>${o}</span></div>`;
+  });
+  h+=`</div><div class="q-fb ${dn?'show':''}">${q.fb}</div>`;
+  if(dn&&qI<QS.length-1)h+=`<button class="btn primary" onclick="nxtQ()" style="padding:9px 22px">Weiter →</button>`;
+  if(dn&&qI===QS.length-1&&!qDone)h+=`<button class="btn primary" onclick="finishQ()" style="padding:9px 22px">Ergebnis &amp; Token →</button>`;
+  document.getElementById('qbody').innerHTML=h;
+}
+function ansQ(i){if(qA[qI]!==undefined)return;qA[qI]=i;drawQ();}
+function nxtQ(){if(qI<QS.length-1){qI++;drawQ();}}
+async function finishQ(){
+  qDone=true;
+  const score=QS.filter((_,i)=>qA[i]===QS[i].c).length;
+  const pct=Math.round(score/QS.length*100);
+  const details=QS.map((_,i)=>qA[i]===QS[i].c?'✓':'✗').join(' ');
+  const rec={action:'save',name:qUser,score,total:QS.length,pct,ts:new Date().toISOString(),details};
+  if(SHEETS_URL!=='IHRE_APPS_SCRIPT_URL_HIER_EINTRAGEN'){
+    fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec)}).catch(function(){});
+  }
+  if(window.storage){
+    const k='wude2_'+Date.now()+'_'+Math.random().toString(36).slice(2,5);
+    window.storage.set(k,JSON.stringify(rec),true).catch(function(){});
+  }
+  window._wude2Results=window._wude2Results||[];
+  window._wude2Results.push(rec);
+  document.getElementById('qMain').style.display='none';
+  document.getElementById('qres').style.display='block';
+  document.getElementById('qfill').style.width='100%';
+  document.getElementById('qcnt').textContent=QS.length+' / '+QS.length;
+  document.getElementById('qrn').textContent=score+'/'+QS.length;
+  const grade=pct>=80?'Ausgezeichnet':pct>=60?'Bestanden':'Teilgenommen';
+  const msg=pct>=80?'Ausgezeichnete Leistung. Die Konzepte sitzen.':pct>=60?'Bestanden — die Themen weiter vertiefen.':'Weitermachen — ethisches Denken braucht Übung.';
+  document.getElementById('qrm').textContent=msg;
+  buildToken(qUser,score,QS.length,pct,grade);
+}
+function buildToken(name,score,total,pct,grade){
+  const ac=pct>=80?'#c4882a':pct>=60?'#3e6147':'#8a7060';
+  const bg1=pct>=80?'#2a1a08':pct>=60?'#0d1a10':'#18120a';
+  const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  _svg=`<svg xmlns="http://www.w3.org/2000/svg" width="360" height="460" viewBox="0 0 360 460">
+  <defs>
+    <linearGradient id="tbg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${bg1}"/><stop offset="100%" stop-color="#18120a"/>
+    </linearGradient>
+    <radialGradient id="tgl" cx="50%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="${ac}" stop-opacity=".15"/><stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+  <rect width="360" height="460" rx="6" fill="url(#tbg)" stroke="${ac}" stroke-width="1.5"/>
+  <rect width="360" height="460" rx="6" fill="url(#tgl)"/>
+  <rect x="0" y="0" width="360" height="3" rx="1.5" fill="${ac}"/>
+  <text x="180" y="36" font-family="Space Mono,monospace" font-size="7" fill="${ac}" letter-spacing="2.5" text-anchor="middle" opacity=".8">WIRTSCHAFTS- UND DIGITALE ETHIK</text>
+  <text x="180" y="50" font-family="Space Mono,monospace" font-size="6.5" fill="rgba(250,220,180,.3)" letter-spacing="1.5" text-anchor="middle">PROF. THOMAS PETZOLD PH.D.</text>
+  <polygon points="180,68 202,80 202,104 180,116 158,104 158,80" fill="none" stroke="${ac}" stroke-width="1.5" opacity=".7"/>
+  <text x="180" y="98" font-family="Cormorant Garamond,Georgia,serif" font-size="20" fill="${ac}" text-anchor="middle" font-style="italic">E</text>
+  <text x="180" y="148" font-family="Space Mono,monospace" font-size="6.5" fill="${ac}" text-anchor="middle" letter-spacing="1.8">QUIZ · 10 FRAGEN · ABGESCHLOSSEN</text>
+  <line x1="44" y1="160" x2="316" y2="160" stroke="${ac}" stroke-width=".5" opacity=".3"/>
+  <text x="180" y="192" font-family="Cormorant Garamond,Georgia,serif" font-size="18" fill="rgba(250,220,180,.85)" text-anchor="middle" font-style="italic">Moral, Normen &amp; Digitale Allmenden</text>
+  <text x="180" y="210" font-family="Space Mono,monospace" font-size="6" fill="rgba(250,220,180,.3)" text-anchor="middle" letter-spacing="1">WARUM UNSERE MORAL NICHT AUSREICHT</text>
+  <line x1="44" y1="224" x2="316" y2="224" stroke="${ac}" stroke-width=".5" opacity=".3"/>
+  <text x="180" y="248" font-family="Space Mono,monospace" font-size="6.5" fill="rgba(250,220,180,.3)" text-anchor="middle" letter-spacing="2">ZERTIFIZIERT FÜR</text>
+  <text x="180" y="274" font-family="Cormorant Garamond,Georgia,serif" font-size="18" fill="rgba(250,220,180,.9)" text-anchor="middle">${esc(name)}</text>
+  <text x="180" y="356" font-family="Cormorant Garamond,Georgia,serif" font-size="60" fill="${ac}" text-anchor="middle" font-weight="300">${score}/${total}</text>
+  <text x="180" y="376" font-family="Space Mono,monospace" font-size="9" fill="${ac}" text-anchor="middle" letter-spacing=".5">${grade.toUpperCase()} · ${pct}%</text>
+  <line x1="44" y1="392" x2="316" y2="392" stroke="${ac}" stroke-width=".5" opacity=".3"/>
+  <text x="180" y="414" font-family="Space Mono,monospace" font-size="6.5" fill="rgba(250,220,180,.2)" text-anchor="middle">An explorable by Prof. T. Petzold Ph.D. &amp; Claude · 2026</text>
+  <text x="24" y="448" font-family="serif" font-size="12" fill="${ac}" opacity=".2">◆</text>
+  <text x="336" y="448" font-family="serif" font-size="12" fill="${ac}" opacity=".2" text-anchor="end">◆</text>
+</svg>`;
+  document.getElementById('tokenWrap').innerHTML=_svg;
+}
+function dlToken(){
+  if(!_svg)return;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([_svg],{type:'image/svg+xml'}));
+  a.download='WuDE_Token_'+qUser.replace(/\s+/g,'_')+'.svg';a.click();
+}
+function restartQ(){
+  qI=0;qA=[];qDone=false;qUser='';_svg='';
+  document.getElementById('qGate').style.display='block';
+  document.getElementById('qMain').style.display='none';
+  document.getElementById('qres').style.display='none';
+  document.getElementById('qName').value='';
+  document.getElementById('qName').style.borderColor='';
+  document.getElementById('tokenWrap').innerHTML='';
+}
+
+// ── CREATOR DASHBOARD ──
+(function(){
+  const PASS='WuDE2026';
+  let clicks=0,timer;
+  document.addEventListener('click',e=>{
+    if(e.clientX<60&&e.clientY>window.innerHeight-60){
+      clicks++;clearTimeout(timer);
+      if(clicks>=3){clicks=0;showCreator();}
+      else timer=setTimeout(()=>clicks=0,2000);
+    }
+  });
+  function showCreator(){
+    const ex=document.getElementById('cPanel');
+    if(ex){ex.style.display=ex.style.display==='none'?'block':'none';if(ex.style.display==='block')loadCD();return;}
+    const p=document.createElement('div');p.id='cPanel';
+    p.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:9000;background:#18120a;border-top:1px solid #3d2a1a;padding:0;font-family:Space Mono,monospace;';
+    p.innerHTML=`<div id="cGate2" style="padding:22px 28px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <span style="font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:#8a7060">Creator</span>
+      <input id="cPw2" type="password" placeholder="Passwort" style="background:rgba(250,220,180,.07);border:1px solid rgba(250,220,180,.15);border-radius:3px;padding:7px 12px;color:#faf7f2;font-family:Space Mono,monospace;font-size:.78rem;width:160px">
+      <button onclick="unlockC()" style="background:var(--amber);border:none;border-radius:3px;padding:7px 14px;color:#18120a;font-family:Space Mono,monospace;font-size:.6rem;letter-spacing:.1em;cursor:pointer">Entsperren</button>
+      <button onclick="document.getElementById('cPanel').style.display='none'" style="background:none;border:1px solid #3d2a1a;border-radius:3px;padding:7px 10px;color:#8a7060;font-family:Space Mono,monospace;font-size:.6rem;cursor:pointer">✕</button>
+      <span id="cErr2" style="color:#a33d50;font-size:.7rem;display:none">Falsches Passwort.</span>
+    </div>
+    <div id="cBoard2" style="display:none;padding:22px 28px;max-height:55vh;overflow-y:auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+        <span style="font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:#c4882a">◎ Creator Dashboard · WuDE</span>
+        <div style="display:flex;gap:7px">
+          <button onclick="loadCD()" style="background:none;border:1px solid #3d2a1a;border-radius:3px;padding:5px 10px;color:#8a7060;font-family:Space Mono,monospace;font-size:.58rem;cursor:pointer">↺</button>
+          <button onclick="exportC()" style="background:none;border:1px solid #3d2a1a;border-radius:3px;padding:5px 10px;color:#8a7060;font-family:Space Mono,monospace;font-size:.58rem;cursor:pointer">⬇ CSV</button>
+          <button onclick="document.getElementById('cPanel').style.display='none'" style="background:none;border:1px solid #3d2a1a;border-radius:3px;padding:5px 9px;color:#8a7060;font-family:Space Mono,monospace;font-size:.58rem;cursor:pointer">✕</button>
+        </div>
+      </div>
+      <div id="cStats2" style="display:flex;gap:18px;margin-bottom:16px;flex-wrap:wrap"></div>
+      <div id="cTable2"></div>
+    </div>`;
+    document.body.appendChild(p);
+    document.getElementById('cPw2').addEventListener('keydown',e=>{if(e.key==='Enter')unlockC();});
+  }
+  window.unlockC=function(){
+    if(document.getElementById('cPw2').value===PASS){
+      document.getElementById('cGate2').style.display='none';
+      document.getElementById('cBoard2').style.display='block';
+      loadCD();
+    }else{document.getElementById('cErr2').style.display='inline';}
+  };
+  window.loadCD=function(){
+    var rec=window._wude2Results||[];
+    var p=Promise.resolve(rec);
+    if(window.storage){
+      p=window.storage.list('wude2_',true).then(function(keys){
+        if(!keys||!keys.keys)return rec;
+        var ex=new Set(rec.map(function(r){return r.ts+r.name;}));
+        var fetches=keys.keys.map(function(k){
+          return window.storage.get(k,true).then(function(r){
+            if(!r)return;
+            var obj;try{obj=JSON.parse(r.value);}catch(pe){return;}
+            if(!ex.has(obj.ts+obj.name)){rec.push(obj);ex.add(obj.ts+obj.name);}
+          }).catch(function(){});
+        });
+        return Promise.all(fetches).then(function(){return rec;});
+      }).catch(function(){return rec;});
+    }
+    if(SHEETS_URL!=='IHRE_APPS_SCRIPT_URL_HIER_EINTRAGEN'){
+      p=p.then(function(){
+        return fetch(SHEETS_URL+'?action=load').then(function(res){return res.json();}).then(function(d){
+          if(!d.records)return;
+          var ex=new Set(rec.map(function(r){return r.ts+r.name;}));
+          d.records.forEach(function(r){if(!ex.has(r.ts+r.name))rec.push(r);});
+        }).catch(function(){});
+      });
+    }
+    p.then(function(){
+      rec.sort(function(a,b){return (b.ts||'').localeCompare(a.ts||'');});
+      window._wude2CRec=rec;
+      var n=rec.length;
+      var avg=n?Math.round(rec.reduce(function(s,r){return s+(r.pct||0);},0)/n):0;
+      var top=n?Math.max.apply(null,rec.map(function(r){return r.pct||0;})):0;
+      var exc=rec.filter(function(r){return (r.pct||0)>=80;}).length;
+      var st=document.getElementById('cStats2');
+      if(st)st.innerHTML=[['Teilnahmen',n],['Ø Ergebnis',avg+'%'],['Bestes',top+'%'],['Ausgezeichnet',exc]].map(function(lv){return '<div style="background:rgba(250,220,180,.05);border:1px solid #3d2a1a;border-radius:3px;padding:10px 14px"><div style="font-size:1.3rem;color:#c4882a;font-family:serif">'+lv[1]+'</div><div style="font-size:.55rem;color:#8a7060;letter-spacing:.1em;text-transform:uppercase;margin-top:2px">'+lv[0]+'</div></div>';}).join('');
+      var tb=document.getElementById('cTable2');if(!tb)return;
+      if(!n){tb.innerHTML='<div style="color:#8a7060;font-size:.8rem;padding:10px 0">Noch keine Ergebnisse.</div>';return;}
+      var html='<table style="width:100%;border-collapse:collapse;font-size:.72rem"><thead><tr style="border-bottom:1px solid #3d2a1a;color:#8a7060;text-align:left"><th style="padding:7px 10px 7px 0">Name</th><th style="padding:7px 10px">Ergebnis</th><th style="padding:7px 10px">%</th><th style="padding:7px 10px">Details</th><th style="padding:7px 0 7px 10px">Zeitpunkt</th></tr></thead><tbody>';
+      rec.forEach(function(r){
+        var col=(r.pct||0)>=80?'#c4882a':(r.pct||0)>=60?'#3e6147':'#8a7060';
+        var dt=r.ts?new Date(r.ts).toLocaleString('de-DE'):'—';
+        html+='<tr style="border-bottom:1px solid rgba(61,42,26,.5)"><td style="padding:7px 10px 7px 0;color:rgba(250,220,180,.75)">'+String(r.name||'—').replace(/</g,'&lt;')+'</td><td style="padding:7px 10px;color:'+col+';font-weight:700">'+(r.score||0)+'/'+(r.total||10)+'</td><td style="padding:7px 10px;color:'+col+'">'+(r.pct||0)+'%</td><td style="padding:7px 10px;color:#3d2a1a;letter-spacing:.1em">'+(r.details||'—')+'</td><td style="padding:7px 0 7px 10px;color:#3d2a1a">'+dt+'</td></tr>';
+      });
+      tb.innerHTML=html+'</tbody></table>';
+    });
+  };
+  window.exportC=function(){
+    const rec=window._wude2CRec||[];if(!rec.length)return;
+    let csv='Name,Score,Total,Prozent,Details,Zeitpunkt\n';
+    rec.forEach(r=>{csv+=`"${(r.name||'').replace(/"/g,'""')}",${r.score||0},${r.total||10},${r.pct||0},"${r.details||''}","${r.ts||''}"\n`;});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+    a.download='WuDE_Ergebnisse.csv';a.click();
+  };
+})();
+</script>
+</body>
+</html>
