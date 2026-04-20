@@ -152,14 +152,13 @@ h1.hero-h1 em{font-style:italic;color:var(--amber-l)}
 .mx-axis-v{
   position:absolute;left:0;top:0;bottom:0;width:22px;
   display:flex;flex-direction:column;align-items:center;justify-content:space-between;
-  padding:10px 0;pointer-events:none;
+  padding:10px 0;pointer-events:none;background:rgba(250,247,242,.03);
+  border-right:1px solid var(--brd);
 }
 .mx-axis-v span{
-  font-family:var(--mono);font-size:.56rem;color:var(--light);letter-spacing:.07em;
-  writing-mode:vertical-rl;text-orientation:mixed;
+  font-family:var(--mono);font-size:.54rem;color:var(--light);letter-spacing:.06em;
+  writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);
 }
-.mx-axis-v span:first-child{transform:rotate(180deg)}
-.mx-axis-v span:last-child{transform:rotate(180deg)}
 .mx-grid{position:absolute;inset:0;pointer-events:none}
 .mx-quadrant{position:absolute;width:50%;height:50%}
 .mx-quadrant.q1{top:0;right:0;background:rgba(124,45,62,.04)}
@@ -526,21 +525,28 @@ footer{
         <div class="mx-quadrant q4"></div>
         <div class="mx-crossH"></div>
         <div class="mx-crossV"></div>
-        <div class="mx-label" style="top:6px;left:28px;color:rgba(124,45,62,.35)">problematisch + normal</div>
-        <div class="mx-label" style="top:6px;right:6px;text-align:right;color:rgba(124,45,62,.6)">problematisch + unnormal</div>
-        <div class="mx-label" style="bottom:6px;left:28px;color:rgba(62,97,71,.45)">ok + normal</div>
-        <div class="mx-label" style="bottom:6px;right:6px;text-align:right;color:rgba(196,136,42,.45)">ok + unnormal</div>
       </div>
       <div class="mx-axis-h">
-        <span>← sozial unnormal</span>
-        <span>sozial normal →</span>
+        <span>← sozial normal</span>
+        <span>sozial unnormal →</span>
       </div>
       <div class="mx-axis-v">
-        <span>← moralisch ok</span>
-        <span>moralisch problematisch →</span>
+        <span>moralisch problematisch</span>
+        <span>moralisch ok</span>
       </div>
     </div>
     <div class="mx-hint" id="mxHint">Alle 6 Karten platziert — diskutieren Sie: Wo fallen „normal" und „richtig" auseinander?</div>
+
+    <div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:var(--bg2);border:1px solid var(--brd);border-radius:5px;padding:16px 18px">
+        <div style="font-family:var(--mono);font-size:.57rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:8px">So liest du die Matrix</div>
+        <p style="font-size:.8rem;color:var(--muted);line-height:1.65">Jede Karte bekommt zwei Koordinaten: <strong style="color:var(--ink)">Wie moralisch problematisch</strong> wirkt es (oben = sehr, unten = kaum) — und <strong style="color:var(--ink)">wie sozial normal</strong> ist es (links = normal, rechts = ungewöhnlich). Ziehe die Karte an die Stelle, die deiner Einschätzung entspricht.</p>
+      </div>
+      <div style="background:var(--burg-dim);border:1px solid rgba(124,45,62,.18);border-radius:5px;padding:16px 18px">
+        <div style="font-family:var(--mono);font-size:.57rem;letter-spacing:.14em;text-transform:uppercase;color:var(--burg);margin-bottom:8px">Beispiel — oben links</div>
+        <p style="font-size:.8rem;color:var(--muted);line-height:1.65">„Virtuellem Influencer vertrauen &amp; Produkte kaufen" → moralisch problematisch (Vertrauensausbeutung) <em>und</em> sozial normal (alle machen es). Das ist das <strong style="color:var(--ink)">kritischste Feld</strong>: Praktiken, die falsch sind — aber niemanden stören.</p>
+      </div>
+    </div>
 
     <div class="pull" style="margin-top:32px">
       <p>Das Problem digitaler Märkte ist nicht, dass Menschen unmoralisch sind — es ist, dass große Systeme mehr Koordination verlangen, als spontane Moral leisten kann.</p>
