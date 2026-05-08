@@ -1209,10 +1209,46 @@ const QS=[
   {q:'Was folgt aus dem Satz: „Das Problem digitaler Märkte ist nicht, dass Menschen unmoralisch sind"?',opts:['Ethik ist in digitalen Märkten irrelevant','Technische Systeme brauchen keine ethischen Grundlagen','Digitale Ethik braucht mehr als Appelle: Regeln, Anreize und institutionelles Design','Individuelle Gesinnung reicht aus, wenn sie konsequent praktiziert wird'],c:2,fb:'Große Systeme verlangen mehr Koordination, als spontane Moral leisten kann. Digitale Ethik ist deshalb eine Frage institutioneller und technischer Koordination — Regeln, Anreize, Plattformdesign und Governance, nicht nur persönliche Gesinnung.'},
 ];
 let qUser='',qI=0,qA=[],qDone=false,_svg='';
+
+// ── QUIZ PERSISTENCE ──
+const Q2_KEY='wude_s2_quiz';
+function saveQuiz(){try{localStorage.setItem(Q2_KEY,JSON.stringify({qUser,qI,qA,qDone}));}catch(e){}}
+function loadQuizState(){
+  try{
+    const s=JSON.parse(localStorage.getItem(Q2_KEY)||'null');
+    if(!s||!s.qUser)return false;
+    qUser=s.qUser;qI=s.qI;qA=s.qA;qDone=s.qDone;
+    return true;
+  }catch(e){return false;}
+}
+function checkQuizResume(){
+  const s=JSON.parse(localStorage.getItem(Q2_KEY)||'null');
+  if(!s||!s.qUser||s.qDone)return;
+  const gate=document.getElementById('qGate');
+  if(!gate)return;
+  const resumeDiv=document.createElement('div');
+  resumeDiv.style.cssText='background:rgba(196,136,42,.1);border:1px solid rgba(196,136,42,.35);border-radius:8px;padding:12px 16px;margin-top:12px';
+  resumeDiv.innerHTML=`<div style="font-size:.75rem;color:var(--amber);margin-bottom:8px">Quiz-Fortschritt gefunden für <strong>${s.qUser}</strong> (Frage ${s.qI+1}/${QS.length})</div>
+    <div style="display:flex;gap:8px"><button onclick="continueQuiz()" style="background:var(--amber);color:#fff;border:none;border-radius:5px;padding:7px 14px;cursor:pointer;font-family:var(--fm);font-size:.58rem;letter-spacing:.08em">Fortsetzen →</button>
+    <button onclick="clearQuiz()" style="background:none;border:1px solid rgba(196,136,42,.4);color:var(--amber);border-radius:5px;padding:7px 14px;cursor:pointer;font-family:var(--fm);font-size:.58rem;letter-spacing:.08em">Neu starten</button></div>`;
+  gate.appendChild(resumeDiv);
+}
+function continueQuiz(){
+  if(!loadQuizState())return;
+  document.getElementById('qGate').style.display='none';
+  document.getElementById('qMain').style.display='block';
+  drawQ();
+}
+function clearQuiz(){
+  localStorage.removeItem(Q2_KEY);
+  const div=document.querySelector('#qGate [style*="amber"]');
+  if(div)div.remove();
+}
 function startQ(){
   const n=document.getElementById('qName').value.trim();
   if(!n){document.getElementById('qName').style.borderColor='var(--burg)';return;}
   qUser=n;qI=0;qA=[];qDone=false;
+  localStorage.removeItem(Q2_KEY);
   document.getElementById('qGate').style.display='none';
   document.getElementById('qMain').style.display='block';
   drawQ();
@@ -1231,10 +1267,11 @@ function drawQ(){
   if(dn&&qI===QS.length-1&&!qDone)h+=`<button class="btn primary" onclick="finishQ()" style="padding:9px 22px">Ergebnis &amp; Token →</button>`;
   document.getElementById('qbody').innerHTML=h;
 }
-function ansQ(i){if(qA[qI]!==undefined)return;qA[qI]=i;drawQ();}
-function nxtQ(){if(qI<QS.length-1){qI++;drawQ();}}
+function ansQ(i){if(qA[qI]!==undefined)return;qA[qI]=i;saveQuiz();drawQ();}
+function nxtQ(){if(qI<QS.length-1){qI++;saveQuiz();drawQ();}}
 async function finishQ(){
   qDone=true;
+  saveQuiz(); // save completed state
   const score=QS.filter((_,i)=>qA[i]===QS[i].c).length;
   const pct=Math.round(score/QS.length*100);
   const details=QS.map((_,i)=>qA[i]===QS[i].c?'✓':'✗').join(' ');
@@ -1302,6 +1339,7 @@ function dlToken(){
 }
 function restartQ(){
   qI=0;qA=[];qDone=false;qUser='';_svg='';
+  localStorage.removeItem(Q2_KEY);
   document.getElementById('qGate').style.display='block';
   document.getElementById('qMain').style.display='none';
   document.getElementById('qres').style.display='none';
@@ -1410,6 +1448,8 @@ function restartQ(){
     a.download='WuDE_Ergebnisse.csv';a.click();
   };
 })();
+// Resume check
+document.addEventListener('DOMContentLoaded', checkQuizResume);
 </script>
 </body>
 </html>
